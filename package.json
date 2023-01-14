@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node dist/src",
+    "start": "node ./build/src",
     "build": "tsc",
     "dev": "nodemon --files src/index.ts --config nodemon.json"
   },
