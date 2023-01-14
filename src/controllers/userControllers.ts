@@ -54,7 +54,6 @@ export const createUserAccount = async (req: TypedRequestBody<{ name: string, em
       }
     }
   } catch (error) {
-    console.log(error)
     res.status(500).json({
       success: false,
       error: serverError
