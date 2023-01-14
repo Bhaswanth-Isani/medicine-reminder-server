@@ -5,4 +5,4 @@ import { isLoggedIn } from '../middleware/isLoggedIn'
 export const medicineRouter = express.Router()
 
 medicineRouter.post('/create-medicine', isLoggedIn, createMedicine)
-medicineRouter.post('/decrease-medicine', isLoggedIn, decreaseMedicine)
+medicineRouter.post('/decrease-medicine', decreaseMedicine)

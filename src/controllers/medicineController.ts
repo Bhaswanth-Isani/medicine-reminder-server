@@ -7,7 +7,7 @@ import { prisma } from '../../prisma'
 // @desc    Creates a new medicine for a particular user using name, compartment, number of pills and time
 // @route   POST /medicine/create-medicine
 // @access  Private
-// @input   {name: string, compartment: string, number: int, time: string[]}
+// @input   {name: string, compartment: number, number: number, time: string[]}
 // @output  {id: string, name: string, compartment: number, number: int, time: string[], userID: string, success: boolean}
 export const createMedicine = async (req: TypedRequestBody<{ name: string, compartment: number, number: number, time: string[] }>, res: Express.Response): Promise<void> => {
   const { name, compartment, number, time } = req.body
@@ -20,7 +20,7 @@ export const createMedicine = async (req: TypedRequestBody<{ name: string, compa
     })
   } else {
     try {
-      if (!z.string().min(3).safeParse(name).success || !z.string().min(1).safeParse(compartment).success || !z.number().min(0).max(30).safeParse(number).success || !z.string().array().min(1).max(3).safeParse(time).success) {
+      if (!z.string().min(3).safeParse(name).success || !z.number().min(1).safeParse(compartment).success || !z.number().min(0).max(30).safeParse(number).success || !z.string().datetime().array().min(1).max(3).safeParse(time).success) {
         res.status(400).json({
           success: false,
           error: invalidInputDataError
