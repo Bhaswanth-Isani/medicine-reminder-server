@@ -28,7 +28,7 @@ export const createMedicine = async (req: TypedRequestBody<{ name: string, compa
       } else {
         const previousMedicineInCompartment = await prisma.medicine.findFirst({
           where: {
-            userId: userID,
+            userID,
             compartment
           }
         })
@@ -50,7 +50,7 @@ export const createMedicine = async (req: TypedRequestBody<{ name: string, compa
             compartment,
             number,
             time,
-            userId: userID
+            userID
           }
         })
 
@@ -75,30 +75,37 @@ export const decreaseMedicine = async (req: TypedRequestBody<{ userID: string, c
 
   try {
     if (!z.string().min(10).safeParse(userID).success || !z.number().min(1).max(3).safeParse(compartment).success) {
-      res.status(401).json({
+      res.status(400).json({
         success: false,
-        error: unauthorizedError
+        error: invalidInputDataError
       })
     } else {
       const previousData = await prisma.medicine.findFirst({
         where: {
-          userId: userID,
+          userID,
           compartment
         }
       })
 
-      await prisma.medicine.update({
-        where: {
-          id: previousData.id
-        },
-        data: {
-          number: previousData.number - 1
-        }
-      })
+      if (previousData !== null) {
+        await prisma.medicine.update({
+          where: {
+            id: previousData.id
+          },
+          data: {
+            number: previousData.number - 1
+          }
+        })
 
-      res.status(200).json({
-        success: true
-      })
+        res.status(200).json({
+          success: true
+        })
+      } else {
+        res.status(400).json({
+          success: false,
+          error: invalidInputDataError
+        })
+      }
     }
   } catch (error) {
     res.status(500).json({
