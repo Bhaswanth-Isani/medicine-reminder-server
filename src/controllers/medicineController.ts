@@ -8,7 +8,7 @@ import { prisma } from '../../prisma'
 // @route   POST /medicine/create-medicine
 // @access  Private
 // @input   {name: string, compartment: number, number: number, time: string[]}
-// @output  {id: string, name: string, compartment: number, number: int, time: string[], userID: string, success: boolean}
+// @output  {medicine: Medicine, success: boolean}
 export const createMedicine = async (req: TypedRequestBody<{ name: string, compartment: number, number: number, time: string[] }>, res: Express.Response): Promise<void> => {
   const { name, compartment, number, time } = req.body
   const userID = req.user?.id
@@ -57,7 +57,7 @@ export const createMedicine = async (req: TypedRequestBody<{ name: string, compa
           }
         })
 
-        res.status(200).json({ ...medicine, success: true })
+        res.status(200).json({ medicine, success: true })
       }
     } catch (error) {
       res.status(500).json({
