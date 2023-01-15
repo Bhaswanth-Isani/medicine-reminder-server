@@ -40,6 +40,9 @@ export const createUserAccount = async (req: TypedRequestBody<{ name: string, em
             email,
             name,
             password: hashedPassword
+          },
+          include: {
+            medicines: true
           }
         })
         user.password = ''
@@ -79,6 +82,9 @@ export const login = async (req: TypedRequestBody<{ email: string, password: str
       const user = await prisma.user.findUnique({
         where: {
           email
+        },
+        include: {
+          medicines: true
         }
       })
 

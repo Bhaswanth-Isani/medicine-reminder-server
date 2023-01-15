@@ -51,6 +51,9 @@ export const createMedicine = async (req: TypedRequestBody<{ name: string, compa
             number,
             time,
             userID
+          },
+          include: {
+            user: true
           }
         })
 
