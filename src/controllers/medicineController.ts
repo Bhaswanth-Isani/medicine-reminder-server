@@ -117,3 +117,45 @@ export const decreaseMedicine = async (req: TypedRequestBody<{ userID: string, c
     })
   }
 }
+
+export const getMedicine = async (req: TypedRequestBody<{ id: string }>, res: Express.Response): Promise<void> => {
+  const { id } = req.body
+
+  try {
+    if (!z.string().safeParse(id).success) {
+      res.status(400).json({
+        success: false,
+        error: invalidInputDataError
+      })
+    } else {
+      const medicines = await prisma.user.findUnique({
+        where: {
+          id
+        },
+        include: {
+          medicines: true
+        }
+      })
+
+      if (medicines !== null) {
+        res.status(200).json({
+          success: true,
+          medicine: medicines.medicines.map((value) => {
+            return {
+              id: value.id,
+              name: value.name,
+              compartment: value.compartment,
+              number: value.number,
+              time: value.time
+            }
+          })
+        })
+      }
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: serverError
+    })
+  }
+}
