@@ -16,7 +16,7 @@ export const createUserAccount = async (req: TypedRequestBody<{ name: string, em
 
   try {
     if (!z.string().min(3).safeParse(name).success || !z.string().email().safeParse(email).success || !z.string().min(6).safeParse(password).success) {
-      res.status(400).json({
+      res.status(200).json({
         success: false,
         error: invalidInputDataError
       })
@@ -28,7 +28,7 @@ export const createUserAccount = async (req: TypedRequestBody<{ name: string, em
       })
 
       if (userExists !== null) {
-        res.status(403).json({
+        res.status(200).json({
           success: false,
           error: userAlreadyExistsError
         })
@@ -57,7 +57,7 @@ export const createUserAccount = async (req: TypedRequestBody<{ name: string, em
       }
     }
   } catch (error) {
-    res.status(500).json({
+    res.status(200).json({
       success: false,
       error: serverError
     })
@@ -74,7 +74,7 @@ export const login = async (req: TypedRequestBody<{ email: string, password: str
 
   try {
     if (!z.string().email().safeParse(email).success || !z.string().min(6).safeParse(password).success) {
-      res.status(400).json({
+      res.status(200).json({
         success: false,
         error: invalidInputDataError
       })
@@ -89,7 +89,7 @@ export const login = async (req: TypedRequestBody<{ email: string, password: str
       })
 
       if (user === null || !await verifyPassword(password, user.password)) {
-        res.status(401).json({
+        res.status(200).json({
           success: false,
           error: invalidCredentialsError
         })
@@ -106,7 +106,7 @@ export const login = async (req: TypedRequestBody<{ email: string, password: str
       }
     }
   } catch (error) {
-    res.status(500).json({
+    res.status(200).json({
       success: false,
       error: serverError
     })
