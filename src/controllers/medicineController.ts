@@ -97,6 +97,12 @@ export const decreaseMedicine = async (req: TypedRequestBody<{ userID: string, c
           }
         })
 
+        await prisma.reminder.create({
+          data: {
+            compartment: previousData.compartment
+          }
+        })
+
         res.status(200).json({
           success: true
         })
@@ -156,4 +162,13 @@ export const getMedicine = async (req: TypedRequestBody<{ id: string }>, res: Ex
       error: serverError
     })
   }
+}
+
+export const getReminder = async (_req: Express.Request, res: Express.Response): Promise<void> => {
+  const reminders = await prisma.reminder.findMany()
+
+  res.status(200).json({
+    success: 200,
+    reminders
+  })
 }
