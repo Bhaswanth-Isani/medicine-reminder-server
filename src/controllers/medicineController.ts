@@ -20,7 +20,7 @@ export const createMedicine = async (req: TypedRequestBody<{ name: string, compa
     })
   } else {
     try {
-      if (!z.string().min(3).safeParse(name).success || !z.number().min(1).safeParse(compartment).success || !z.number().min(0).max(30).safeParse(number).success || !z.string().datetime().array().min(1).max(3).safeParse(time).success) {
+      if (!z.string().min(3).safeParse(name).success || !z.number().min(1).safeParse(compartment).success || !z.number().min(0).max(30).safeParse(number).success || !z.array(z.string()).min(1).max(3).safeParse(time).success) {
         res.status(400).json({
           success: false,
           error: invalidInputDataError
@@ -51,9 +51,6 @@ export const createMedicine = async (req: TypedRequestBody<{ name: string, compa
             number,
             time,
             userID
-          },
-          include: {
-            user: true
           }
         })
 
