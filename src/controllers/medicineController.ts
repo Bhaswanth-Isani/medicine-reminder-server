@@ -168,7 +168,7 @@ export const getReminder = async (_req: Express.Request, res: Express.Response):
   const reminders = await prisma.reminder.findMany()
 
   res.status(200).json({
-    success: 200,
+    success: true,
     reminders
   })
 }
