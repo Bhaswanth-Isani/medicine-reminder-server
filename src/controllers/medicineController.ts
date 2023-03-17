@@ -143,7 +143,8 @@ export const getMedicine = async (req: TypedRequestBody<{ id: string }>, res: Ex
               name: value.name,
               compartment: value.compartment,
               number: value.number,
-              time: value.time
+              time: value.time,
+              userID: value.userID
             }
           })
         })
