@@ -26,23 +26,12 @@ export const createMedicine = async (req: TypedRequestBody<{ name: string, compa
           error: invalidInputDataError
         })
       } else {
-        const previousMedicineInCompartment = await prisma.medicine.findFirst({
+        await prisma.medicine.delete({
           where: {
             userID,
             compartment
           }
         })
-
-        if (previousMedicineInCompartment !== null) {
-          await prisma.medicine.update({
-            where: {
-              id: previousMedicineInCompartment.id
-            },
-            data: {
-              compartment: 0
-            }
-          })
-        }
 
         const medicine = await prisma.medicine.create({
           data: {
