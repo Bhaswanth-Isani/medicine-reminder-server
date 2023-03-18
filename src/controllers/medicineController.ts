@@ -26,9 +26,8 @@ export const createMedicine = async (req: TypedRequestBody<{ name: string, compa
           error: invalidInputDataError
         })
       } else {
-        await prisma.medicine.delete({
+        await prisma.medicine.deleteMany({
           where: {
-            userID,
             compartment
           }
         })
@@ -135,7 +134,7 @@ export const getMedicine = async (req: TypedRequestBody<{ id: string }>, res: Ex
           medicine: medicines.medicines.map((value) => {
             return {
               compartment: value.compartment,
-              time: value.time,
+              time: value.time
             }
           })
         })
@@ -178,7 +177,7 @@ export const getUserMedicine = async (req: TypedRequestBody<{ id: string }>, res
               userID: value.userID,
               number: value.number,
               compartment: value.compartment,
-              time: value.time,
+              time: value.time
             }
           })
         })
