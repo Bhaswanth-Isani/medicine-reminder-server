@@ -199,3 +199,17 @@ export const getReminder = async (_req: Express.Request, res: Express.Response):
     reminders
   })
 }
+
+export const deleteMedicine = async (req: TypedRequestBody<{ compartment: number }>, res: Express.Response): Promise<void> => {
+  const compartment = req.body.compartment
+
+  await prisma.medicine.deleteMany({
+    where: {
+      compartment
+    }
+  })
+
+  res.status(200).json({
+    deleted: true
+  })
+}
