@@ -160,6 +160,48 @@ export const getMedicine = async (req: TypedRequestBody<{ id: string }>, res: Ex
   }
 }
 
+export const getUserMedicine = async (req: TypedRequestBody<{ id: string }>, res: Express.Response): Promise<void> => {
+  const { id } = req.body
+
+  try {
+    if (!z.string().safeParse(id).success) {
+      res.status(400).json({
+        success: false,
+        error: invalidInputDataError
+      })
+    } else {
+      const medicines = await prisma.user.findUnique({
+        where: {
+          id
+        },
+        include: {
+          medicines: true
+        }
+      })
+
+      if (medicines !== null) {
+        res.status(200).json({
+          success: true,
+          medicine: medicines.medicines.map((value) => {
+            return {
+              id: value.id,
+              userID: value.userID,
+              number: value.number,
+              compartment: value.compartment,
+              time: value.time,
+            }
+          })
+        })
+      }
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: serverError
+    })
+  }
+}
+
 export const getReminder = async (_req: Express.Request, res: Express.Response): Promise<void> => {
   const reminders = await prisma.reminder.findMany()
 
