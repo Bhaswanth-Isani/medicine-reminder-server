@@ -145,12 +145,8 @@ export const getMedicine = async (req: TypedRequestBody<{ id: string }>, res: Ex
           success: true,
           medicine: medicines.medicines.map((value) => {
             return {
-              id: value.id,
-              name: value.name,
               compartment: value.compartment,
-              number: value.number,
               time: value.time,
-              userID: value.userID
             }
           })
         })
